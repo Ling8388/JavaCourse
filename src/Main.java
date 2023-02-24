@@ -1,5 +1,8 @@
 // DO NOT MODIFY THIS FILE.
 
+import java.time.LocalTime;
+import java.util.Comparator;
+
 public class Main {
     public static void main(String[] args) {
         testNoArgConstructor();
@@ -17,6 +20,10 @@ public class Main {
         testRemove();
         testAddFrom();
         testAddTo();
+        testForEach();
+        testReplaceAll();
+        testMax();
+        testSort();
     }
 
     private static void testNoArgConstructor() {
@@ -460,7 +467,7 @@ public class Main {
     }
 
     private static void testAddTo() {
-        System.out.println("Testing addTo");
+        System.out.println("Testing addFrom");
 
         FancyArray<Integer> fa1 = new FancyArray<>();
         fa1.add(1);
@@ -487,5 +494,82 @@ public class Main {
         fa3.addTo(fa4);
         System.out.println(fa4); // expected: [2.5, 3.5, 1]
         System.out.println(fa3); // expected: [1]
+
+        System.out.println();
+    }
+
+    private static void testForEach() {
+        System.out.println("testing forEach");
+
+        FancyArray<Integer> fancyArray = new FancyArray<>(6);
+        fancyArray.add(11);
+        fancyArray.add(33);
+        fancyArray.add(22);
+
+        fancyArray.forEach(integer -> System.out.print(integer + " ")); // expected: 11 33 22
+
+        System.out.println("\n");
+    }
+
+    private static void testReplaceAll() {
+        System.out.println("testing replaceAll");
+
+        FancyArray<Integer> fancyArray = new FancyArray<>(6);
+        fancyArray.add(11);
+        fancyArray.add(33);
+        fancyArray.add(22);
+
+        fancyArray.replaceAll(integer -> 2 * integer);
+
+        System.out.println(fancyArray.get(0)); // expected: 22
+        System.out.println(fancyArray.get(1)); // expected: 66
+        System.out.println(fancyArray.get(2)); // expected: 44
+
+        System.out.println();
+    }
+
+    private static void testMax() {
+        System.out.println("testing max");
+
+        FancyArray<Integer> fancyArray = new FancyArray<>(6);
+        fancyArray.add(11);
+        fancyArray.add(33);
+        fancyArray.add(22);
+
+        Comparator<Number> numberComparator = (number1, number2) -> Double.compare(number1.doubleValue(), number2.doubleValue());
+        System.out.println(fancyArray.max(numberComparator)); // expected: 33
+
+        FancyArray<LocalTime> localTimeFancyArray = new FancyArray<>(6);
+        localTimeFancyArray.add(LocalTime.parse("05:45"));
+        localTimeFancyArray.add(LocalTime.parse("03:50"));
+        localTimeFancyArray.add(LocalTime.parse("15:12"));
+        localTimeFancyArray.add(LocalTime.parse("10:45"));
+
+        Comparator<LocalTime> localTimeComparator = Comparator.naturalOrder();
+        System.out.println(localTimeFancyArray.max(localTimeComparator)); // expected: 15:12
+
+        System.out.println();
+    }
+    private static void testSort() {
+        System.out.println("testing sort");
+
+        FancyArray<Integer> fancyArray = new FancyArray<>(6);
+        fancyArray.add(11);
+        fancyArray.add(33);
+        fancyArray.add(22);
+
+        Comparator<Number> numberComparator = (number1, number2) -> Double.compare(number1.doubleValue(), number2.doubleValue());
+        fancyArray.sort(numberComparator);
+        System.out.println(fancyArray); // expected: [11, 22, 33]
+
+        FancyArray<LocalTime> localTimeFancyArray = new FancyArray<>(6);
+        localTimeFancyArray.add(LocalTime.parse("05:45"));
+        localTimeFancyArray.add(LocalTime.parse("03:50"));
+        localTimeFancyArray.add(LocalTime.parse("15:12"));
+        localTimeFancyArray.add(LocalTime.parse("10:45"));
+
+        Comparator<LocalTime> localTimeComparator = Comparator.naturalOrder();
+        localTimeFancyArray.sort(localTimeComparator);
+        System.out.println(localTimeFancyArray); // expected: [03:50, 05:45, 10:45, 15:12]
     }
 }

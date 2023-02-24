@@ -1,3 +1,7 @@
+import java.util.Comparator;
+import java.util.function.Consumer;
+import java.util.function.UnaryOperator;
+
 public class FancyArray<E> {
     private int sizes;
     private int otherSizes;
@@ -148,4 +152,42 @@ public class FancyArray<E> {
         }
         anotherArray.sizes = anotherSizes;
     }
+
+    public void forEach(Consumer<? super E> action) {
+        for(int i=0; i<this.sizes; i++) {
+            System.out.print(arr[i] + " ");
+        }
+    }
+
+    public void replaceAll(UnaryOperator<E> uo) {
+        for(int i=0; i<this.sizes; i++) {
+            arr[i] = uo.apply(arr[i]);
+        }
+    }
+
+    public E max(Comparator<? super E> c) {
+        E max = arr[0];
+        for(int i=1; i<this.sizes; i++) {
+            if(c.compare(max, arr[i])<0){
+                max = arr[i];
+            }
+        }
+        return max;
+    }
+
+    public void sort(Comparator<? super E> c) {
+        E temp;
+        for(int i=0; i<this.sizes; i++) {
+            for(int j=i+1; j<this.sizes; j++) {
+                if(c.compare(arr[i], arr[j])>0){
+                    temp = arr[i];
+                    arr[i] = arr[j];
+                    arr[j] = temp;
+                }
+            }
+        }
+    }
+
+
 }
+
