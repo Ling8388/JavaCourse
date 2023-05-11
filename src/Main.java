@@ -1,575 +1,1116 @@
-// DO NOT MODIFY THIS FILE.
+/*
+DO NOT MODIFY THIS FILE.
 
-import java.time.LocalTime;
-import java.util.Comparator;
+This file tests the following methods of DoublyLinkedList:
+- size, isEmpty
+- toString, toReverseString
+- addFirst, addLast
+- getFirst, getLast
+- removeFirst, removeLast
+- clear
+- contains
+- add(E e), remove(Object o)
+- equals
+- indexOf
+- lastIndexOf
+- get
+- set
+- add(int index, E e)
+- remove(int index)
+- iterator()
+- Iterator's next()
+- Iterator's hasNext()
+- Iterator's remove()
+ */
+
+import java.lang.reflect.Method;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class Main {
     public static void main(String[] args) {
-        testNoArgConstructor();
-        testParameterizedConstructor();
-        testSize();
-        testAdd();
-        testGet();
-        testSet();
+        testAddFirst();
+        testAddLast();
+        testAddFirstAndAddLast();
+        testGetFirst();
+        testGetLast();
+        testRemoveFirst();
+        testRemoveLast();
+        testClear();
         testContains();
-        testToString();
+        testAdd();
+        testRemoveObject();
         testEquals();
         testIndexOf();
         testLastIndexOf();
-        testAddTwoParameters();
-        testRemove();
-        testAddFrom();
-        testAddTo();
-        testForEach();
+        testGet();
+        testSet();
+        testAddAtIndex();
+        testRemoveAtIndex();
+        testImplementsList3130();
+        testIterator();
+        testIteratorNext();
+        testIteratorHasNext();
+        testOverridesReplaceAll();
         testReplaceAll();
-        testMax();
-        testSort();
+        testIteratorRemove();
     }
 
-    private static void testNoArgConstructor() {
-        System.out.println("Testing no-arg constructor");
-        new FancyArray<String>();
-        new FancyArray<Integer>();
+    private static void testAddFirst() {
+        System.out.println("testing addFirst");
+
+        DoublyLinkedList<String> list = new DoublyLinkedList<>();
+        System.out.println(list.size());            // expected: 0
+        System.out.println(list.isEmpty());         // expected: true
+        System.out.println(list);                   // expected: []
+        System.out.println(list.toReverseString()); // expected: []
+        System.out.println();
+
+        list.addFirst("aa");
+        System.out.println(list.size());            // expected: 1
+        System.out.println(list.isEmpty());         // expected: false
+        System.out.println(list);                   // expected: [aa]
+        System.out.println(list.toReverseString()); // expected: [aa]
+        System.out.println();
+
+        list.addFirst("b");
+        System.out.println(list.size());            // expected: 2
+        System.out.println(list.isEmpty());         // expected: false
+        System.out.println(list);                   // expected: [b, aa]
+        System.out.println(list.toReverseString()); // expected: [aa, b]
+        System.out.println();
+
+        list.addFirst("c");
+        System.out.println(list.size());            // expected: 3
+        System.out.println(list.isEmpty());         // expected: false
+        System.out.println(list);                   // expected: [c, b, aa]
+        System.out.println(list.toReverseString()); // expected: [aa, b, c]
+        System.out.println();
+
+        list.addFirst("d");
+        System.out.println(list.size());            // expected: 4
+        System.out.println(list.isEmpty());         // expected: false
+        System.out.println(list);                   // expected: [d, c, b, aa]
+        System.out.println(list.toReverseString()); // expected: [aa, b, c, d]
+        System.out.println();
+
+        list.addFirst("c");
+        System.out.println(list.size());            // expected: 5
+        System.out.println(list.isEmpty());         // expected: false
+        System.out.println(list);                   // expected: [c, d, c, b, aa]
+        System.out.println(list.toReverseString()); // expected: [aa, b, c, d, c]
         System.out.println();
     }
 
-    private static void testParameterizedConstructor() {
-        System.out.println("Testing parameterized constructor");
+    private static void testAddLast() {
+        System.out.println("testing addLast");
+
+        DoublyLinkedList<String> list = new DoublyLinkedList<>();
+        System.out.println(list.size());            // expected: 0
+        System.out.println(list.isEmpty());         // expected: true
+        System.out.println(list);                   // expected: []
+        System.out.println(list.toReverseString()); // expected: []
+        System.out.println();
+
+        list.addLast("aa");
+        System.out.println(list.size());            // expected: 1
+        System.out.println(list.isEmpty());         // expected: false
+        System.out.println(list);                   // expected: [aa]
+        System.out.println(list.toReverseString()); // expected: [aa]
+        System.out.println();
+
+        list.addLast("b");
+        System.out.println(list.size());            // expected: 2
+        System.out.println(list.isEmpty());         // expected: false
+        System.out.println(list);                   // expected: [aa, b]
+        System.out.println(list.toReverseString()); // expected: [b, aa]
+        System.out.println();
+
+        list.addLast("c");
+        System.out.println(list.size());            // expected: 3
+        System.out.println(list.isEmpty());         // expected: false
+        System.out.println(list);                   // expected: [aa, b, c]
+        System.out.println(list.toReverseString()); // expected: [c, b, aa]
+        System.out.println();
+
+        list.addLast("d");
+        System.out.println(list.size());            // expected: 4
+        System.out.println(list.isEmpty());         // expected: false
+        System.out.println(list);                   // expected: [aa, b, c, d]
+        System.out.println(list.toReverseString()); // expected: [d, c, b, aa]
+        System.out.println();
+
+        list.addLast("c");
+        System.out.println(list.size());            // expected: 5
+        System.out.println(list.isEmpty());         // expected: false
+        System.out.println(list);                   // expected: [aa, b, c, d, c]
+        System.out.println(list.toReverseString()); // expected: [c, d, c, b, aa]
+        System.out.println();
+    }
+
+    private static void testAddFirstAndAddLast() {
+        System.out.println("testing addFirst and addLast");
+
+        DoublyLinkedList<String> list = new DoublyLinkedList<>();
+        list.addLast("a");
+        list.addFirst("b");
+        list.addFirst("c");
+        list.addLast("d");
+        list.addLast("e");
+
+        System.out.println(list);                   // expected: [c, b, a, d, e]
+        System.out.println(list.toReverseString()); // expected: [e, d, a, b, c]
+        System.out.println();
+    }
+
+    private static void testGetFirst() {
+        System.out.println("testing getFirst");
+
+        DoublyLinkedList<String> list = new DoublyLinkedList<>();
 
         try {
-            new FancyArray<String>(0);
-            new FancyArray<String>(1);
-            new FancyArray<String>(10);
-            new FancyArray<String>(100);
-            new FancyArray<Integer>(100);
-        } catch (Exception e) {
-            System.out.println("an exception should not have occurred here, but did");
-        }
-
-        try {
-            new FancyArray<String>(-1);
+            list.getFirst();
             System.out.println("an exception should have occurred here, but didn't");
-        } catch (Exception ignored) {
+        } catch (NoSuchElementException ignored) {
         }
+
+        list.addFirst("a");
+        System.out.println(list.getFirst()); // expected: a
+
+        list.addFirst("b");
+        System.out.println(list.getFirst()); // expected: b
+
+        list.addFirst("c");
+        System.out.println(list.getFirst()); // expected: c
+
+        list.addLast("d");
+        System.out.println(list.getFirst()); // expected: c
+
+        System.out.println();
+
+        // ------------------------------------------------------------------
+
+        list = new DoublyLinkedList<>();
+
+        list.addLast("a");
+        System.out.println(list.getFirst()); // expected: a
+
+        list.addLast("b");
+        System.out.println(list.getFirst()); // expected: a
+
+        list.addFirst("c");
+        System.out.println(list.getFirst()); // expected: c
 
         System.out.println();
     }
 
-    private static void testSize() {
-        System.out.println("Testing size");
+    private static void testGetLast() {
+        System.out.println("testing getLast");
 
-        FancyArray<String> a = new FancyArray<>();
-        System.out.println(a.size()); // expected: 0
-        a.add("a string");
-        System.out.println(a.size()); // expected: 1
-        a.add("another string");
-        System.out.println(a.size()); // expected: 2
+        DoublyLinkedList<String> list = new DoublyLinkedList<>();
 
-        FancyArray<String> b = new FancyArray<>(5);
-        System.out.println(b.size()); // expected: 0
-        b.add("a string");
-        System.out.println(b.size()); // expected: 1
-        b.add("another string");
-        System.out.println(b.size()); // expected: 2
+        try {
+            list.getLast();
+            System.out.println("an exception should have occurred here, but didn't");
+        } catch (NoSuchElementException ignored) {
+        }
 
+        list.addLast("a");
+        System.out.println(list.getLast()); // expected: a
+
+        list.addLast("b");
+        System.out.println(list.getLast()); // expected: b
+
+        list.addLast("c");
+        System.out.println(list.getLast()); // expected: c
+
+        list.addFirst("d");
+        System.out.println(list.getLast()); // expected: c
+
+        System.out.println();
+
+        // ------------------------------------------------------------------
+
+        list = new DoublyLinkedList<>();
+
+        list.addFirst("a");
+        System.out.println(list.getLast()); // expected: a
+
+        list.addFirst("b");
+        System.out.println(list.getLast()); // expected: a
+
+        list.addLast("c");
+        System.out.println(list.getLast()); // expected: c
+
+        System.out.println();
+    }
+
+    private static void testRemoveFirst() {
+        System.out.println("testing removeFirst");
+
+        DoublyLinkedList<String> list = new DoublyLinkedList<>();
+
+        try {
+            list.removeFirst();
+            System.out.println("An exception should have occurred here, but didn't");
+        } catch (NoSuchElementException ignored) {
+        }
+
+        list.addFirst("a");
+        String first = list.removeFirst();
+        System.out.println(first);                  // expected: a
+        System.out.println(list.size());            // expected: 0
+        System.out.println(list.isEmpty());         // expected: true
+        System.out.println(list);                   // expected: []
+        System.out.println(list.toReverseString()); // expected: []
+        System.out.println();
+
+        list.addFirst("a");
+        list.addFirst("b");
+        list.addFirst("c");
+        System.out.println(list.size());            // expected: 3
+        System.out.println(list.isEmpty());         // expected: false
+        System.out.println(list);                   // expected: [c, b, a]
+        System.out.println(list.toReverseString()); // expected: [a, b, c]
+        System.out.println(list.getFirst());        // expected: c
+        System.out.println(list.getLast());         // expected: a
+        System.out.println();
+
+        first = list.removeFirst();
+        System.out.println(first);                  // expected: c
+        System.out.println(list.size());            // expected: 2
+        System.out.println(list.isEmpty());         // expected: false
+        System.out.println(list);                   // expected: [b, a]
+        System.out.println(list.toReverseString()); // expected: [a, b]
+        System.out.println(list.getFirst());        // expected: b
+        System.out.println(list.getLast());         // expected: a
+        System.out.println();
+
+        first = list.removeFirst();
+        System.out.println(first);                  // expected: b
+        System.out.println(list.size());            // expected: 1
+        System.out.println(list.isEmpty());         // expected: false
+        System.out.println(list);                   // expected: [a]
+        System.out.println(list.toReverseString()); // expected: [a]
+        System.out.println(list.getFirst());        // expected: a
+        System.out.println(list.getLast());         // expected: a
+        System.out.println();
+
+        first = list.removeFirst();
+        System.out.println(first);                  // expected: a
+        System.out.println(list.size());            // expected: 0
+        System.out.println(list.isEmpty());         // expected: true
+        System.out.println(list);                   // expected: []
+        System.out.println(list.toReverseString()); // expected: []
+        System.out.println();
+
+        try {
+            list.getFirst();
+            System.out.println("An exception should have occurred here, but didn't");
+        } catch (NoSuchElementException ignored) {
+        }
+
+        try {
+            list.getLast();
+            System.out.println("An exception should have occurred here, but didn't");
+        } catch (NoSuchElementException ignored) {
+        }
+    }
+
+    private static void testRemoveLast() {
+        System.out.println("testing removeLast");
+
+        DoublyLinkedList<String> list = new DoublyLinkedList<>();
+
+        try {
+            list.removeLast();
+            System.out.println("An exception should have occurred here, but didn't");
+        } catch (NoSuchElementException ignored) {
+        }
+
+        list.addFirst("a");
+        String last = list.removeLast();
+        System.out.println(last);                  // expected: a
+        System.out.println(list.size());            // expected: 0
+        System.out.println(list.isEmpty());         // expected: true
+        System.out.println(list);                   // expected: []
+        System.out.println(list.toReverseString()); // expected: []
+        System.out.println();
+
+        list.addFirst("a");
+        list.addFirst("b");
+        list.addFirst("c");
+        System.out.println(list.size());            // expected: 3
+        System.out.println(list.isEmpty());         // expected: false
+        System.out.println(list);                   // expected: [c, b, a]
+        System.out.println(list.toReverseString()); // expected: [a, b, c]
+        System.out.println(list.getFirst());        // expected: c
+        System.out.println(list.getLast());         // expected: a
+        System.out.println();
+
+        last = list.removeLast();
+        System.out.println(last);                  // expected: a
+        System.out.println(list.size());            // expected: 2
+        System.out.println(list.isEmpty());         // expected: false
+        System.out.println(list);                   // expected: [c, b]
+        System.out.println(list.toReverseString()); // expected: [b, c]
+        System.out.println(list.getFirst());        // expected: c
+        System.out.println(list.getLast());         // expected: b
+        System.out.println();
+
+        last = list.removeLast();
+        System.out.println(last);                  // expected: b
+        System.out.println(list.size());            // expected: 1
+        System.out.println(list.isEmpty());         // expected: false
+        System.out.println(list);                   // expected: [c]
+        System.out.println(list.toReverseString()); // expected: [c]
+        System.out.println(list.getFirst());        // expected: c
+        System.out.println(list.getLast());         // expected: c
+        System.out.println();
+
+        last = list.removeFirst();
+        System.out.println(last);                  // expected: c
+        System.out.println(list.size());            // expected: 0
+        System.out.println(list.isEmpty());         // expected: true
+        System.out.println(list);                   // expected: []
+        System.out.println(list.toReverseString()); // expected: []
+        System.out.println();
+
+        try {
+            list.getFirst();
+            System.out.println("An exception should have occurred here, but didn't");
+        } catch (NoSuchElementException ignored) {
+        }
+
+        try {
+            list.getLast();
+            System.out.println("An exception should have occurred here, but didn't");
+        } catch (NoSuchElementException ignored) {
+        }
+    }
+
+    private static void testClear() {
+        System.out.println("testing clear");
+
+        DoublyLinkedList<String> list = new DoublyLinkedList<>();
+        list.clear();
+        System.out.println(list.isEmpty());         // expected: true
+        System.out.println(list.size());            // expected: 0
+        System.out.println(list);                   // expected: []
+        System.out.println(list.toReverseString()); // expected: []
+        System.out.println();
+
+        list.addLast("a");
+        list.clear();
+        System.out.println(list.isEmpty());         // expected: true
+        System.out.println(list.size());            // expected: 0
+        System.out.println(list);                   // expected: []
+        System.out.println(list.toReverseString()); // expected: []
+        System.out.println();
+
+        list.addLast("a");
+        list.addLast("b");
+        list.clear();
+        System.out.println(list.isEmpty());         // expected: true
+        System.out.println(list.size());            // expected: 0
+        System.out.println(list);                   // expected: []
+        System.out.println(list.toReverseString()); // expected: []
+        System.out.println();
+
+        try {
+            list.getFirst();
+            System.out.println("An exception should have occurred here, but didn't");
+        } catch (NoSuchElementException ignored) {
+        }
+
+        try {
+            list.getLast();
+            System.out.println("An exception should have occurred here, but didn't");
+        } catch (NoSuchElementException ignored) {
+        }
+    }
+
+    private static void testContains() {
+        System.out.println("testing contains");
+
+        DoublyLinkedList<String> list = new DoublyLinkedList<>();
+        System.out.println(list.contains(new String("a"))); // expected: false
+        System.out.println();
+
+        list.addLast("a");
+        System.out.println(list.contains(new String("a"))); // expected: true
+        System.out.println(list.contains(new String("b"))); // expected: false
+        System.out.println();
+
+        list.addLast("b");
+        System.out.println(list.contains(new String("a"))); // expected: true
+        System.out.println(list.contains(new String("b"))); // expected: true
+        System.out.println(list.contains(new String("c"))); // expected: false
+        System.out.println();
+
+        list.addLast("c");
+        System.out.println(list.contains(new String("a"))); // expected: true
+        System.out.println(list.contains(new String("b"))); // expected: true
+        System.out.println(list.contains(new String("c"))); // expected: true
+        System.out.println(list.contains(new String("d"))); // expected: false
+        System.out.println();
+
+        list.removeLast();
+        System.out.println(list.contains(new String("a"))); // expected: true
+        System.out.println(list.contains(new String("b"))); // expected: true
+        System.out.println(list.contains(new String("c"))); // expected: false
+        System.out.println(list.contains(new String("d"))); // expected: false
+        System.out.println();
+
+        list.removeFirst();
+        System.out.println(list.contains(new String("a"))); // expected: false
+        System.out.println(list.contains(new String("b"))); // expected: true
+        System.out.println(list.contains(new String("c"))); // expected: false
+        System.out.println(list.contains(new String("d"))); // expected: false
         System.out.println();
     }
 
     private static void testAdd() {
-        System.out.println("Testing add");
+        System.out.println("testing add");
 
-        FancyArray<String> a = new FancyArray<>();
+        DoublyLinkedList<String> list = new DoublyLinkedList<>();
+        System.out.println(list.size());            // expected: 0
+        System.out.println(list.isEmpty());         // expected: true
+        System.out.println(list);                   // expected: []
+        System.out.println(list.toReverseString()); // expected: []
+        System.out.println();
 
-        try {
-            for (int i = 0; i < 10; i++) {
-                a.add("a string");
-            }
-        } catch (Exception e) {
-            System.out.println("an exception should not have occurred here, but did");
-        }
+        boolean added = list.add("aa");
+        System.out.println(added);                  // expected: true
+        System.out.println(list.size());            // expected: 1
+        System.out.println(list.isEmpty());         // expected: false
+        System.out.println(list);                   // expected: [aa]
+        System.out.println(list.toReverseString()); // expected: [aa]
+        System.out.println();
 
-        try {
-            a.add("a string");
-            System.out.println("an exception should have occurred here, but didn't");
-        } catch (Exception ignored) {
-        }
+        list.add("b");
+        System.out.println(list.size());            // expected: 2
+        System.out.println(list.isEmpty());         // expected: false
+        System.out.println(list);                   // expected: [aa, b]
+        System.out.println(list.toReverseString()); // expected: [b, aa]
+        System.out.println();
 
-        FancyArray<String> b = new FancyArray<>(3);
-        try {
-            for (int i = 0; i < 3; i++) {
-                b.add("a string");
-            }
-        } catch (Exception e) {
-            System.out.println("an exception should not have occurred here, but did");
-        }
+        list.add("c");
+        System.out.println(list.size());            // expected: 3
+        System.out.println(list.isEmpty());         // expected: false
+        System.out.println(list);                   // expected: [aa, b, c]
+        System.out.println(list.toReverseString()); // expected: [c, b, aa]
+        System.out.println();
 
-        try {
-            b.add("a string");
-            System.out.println("an exception should have occurred here, but didn't");
-        } catch (Exception ignored) {
-        }
+        list.add("d");
+        System.out.println(list.size());            // expected: 4
+        System.out.println(list.isEmpty());         // expected: false
+        System.out.println(list);                   // expected: [aa, b, c, d]
+        System.out.println(list.toReverseString()); // expected: [d, c, b, aa]
+        System.out.println();
 
-        FancyArray<Integer> integers = new FancyArray<>();
-        integers.add(45);
-
+        list.add("c");
+        System.out.println(list.size());            // expected: 5
+        System.out.println(list.isEmpty());         // expected: false
+        System.out.println(list);                   // expected: [aa, b, c, d, c]
+        System.out.println(list.toReverseString()); // expected: [c, d, c, b, aa]
         System.out.println();
     }
 
-    private static void testGet() {
-        System.out.println("Testing get");
+    private static void testRemoveObject() {
+        System.out.println("testing remove(Object)");
 
-        FancyArray<String> a = new FancyArray<>(5);
-        a.add("first");
-        a.add("second");
-        a.add("third");
-
-        System.out.println(a.get(0)); // expected: first
-        System.out.println(a.get(1)); // expected: second
-        System.out.println(a.get(2)); // expected: third
-
-        try {
-            a.get(-1);
-            System.out.println("an exception should have occurred here, but didn't");
-        } catch (Exception ignored) {
-        }
-
-        try {
-            a.get(3);
-            System.out.println("an exception should have occurred here, but didn't");
-        } catch (Exception ignored) {
-        }
-
-        FancyArray<Integer> integers = new FancyArray<>();
-        integers.add(45);
-        System.out.println(integers.get(0)); // expected: 45
-
+        DoublyLinkedList<String> list = new DoublyLinkedList<>();
+        boolean removed = list.remove(new String("a"));
+        System.out.println(removed);                // expected: false
+        System.out.println(list.size());            // expected: 0
+        System.out.println(list);                   // expected: []
+        System.out.println(list.toReverseString()); // expected: []
         System.out.println();
-    }
 
-    private static void testSet() {
-        System.out.println("Testing set");
+        list.add("a");
 
-        FancyArray<String> a = new FancyArray<>(5);
-        a.add("first");
-        a.add("second");
-        a.add("third");
-
-        String oldString = a.set(1, "another");
-        System.out.println(oldString); // expected: second
-        System.out.println(a.get(1)); // expected: another
-
-        try {
-            a.set(-1, "another");
-            System.out.println("an exception should have occurred here, but didn't");
-        } catch (Exception ignored) {
-        }
-
-        try {
-            a.set(3, "another");
-            System.out.println("an exception should have occurred here, but didn't");
-        } catch (Exception ignored) {
-        }
-
-        FancyArray<Integer> integers = new FancyArray<>();
-        integers.add(45);
-        int original = integers.set(0, 100);
-        System.out.println(original);        // expected: 45
-        System.out.println(integers.get(0)); // expected: 100
-
+        removed = list.remove(new String("b"));
+        System.out.println(removed);                // expected: false
+        System.out.println(list.size());            // expected: 1
+        System.out.println(list);                   // expected: [a]
+        System.out.println(list.toReverseString()); // expected: [a]
         System.out.println();
-    }
 
-    private static void testContains() {
-        System.out.println("Testing contains");
-
-        FancyArray<String> a = new FancyArray<>(5);
-        a.add("first");
-        a.add("second");
-        a.add("third");
-
-        System.out.println(a.contains(new String("first"))); // expected: true
-        System.out.println(a.contains(new String("second"))); // expected: true
-        System.out.println(a.contains("third")); // expected: true
-        System.out.println(a.contains("another")); // expected: false
-
-        a.set(1, "another");
-        System.out.println(a.contains("another")); // expected: true
-
-        FancyArray<Integer> integers = new FancyArray<>();
-        integers.add(45);
-        System.out.println(integers.contains(45));  // expected: true
-        System.out.println(integers.contains(100)); // expected: false
-
+        removed = list.remove(new String("a"));
+        System.out.println(removed);                // expected: true
+        System.out.println(list.size());            // expected: 0
+        System.out.println(list);                   // expected: []
+        System.out.println(list.toReverseString()); // expected: []
         System.out.println();
-    }
 
-    private static void testToString() {
-        System.out.println("Testing toString");
+        list.add("a");
+        list.add("b");
+        list.add("c");
+        list.add("d");
+        list.add("c");
 
-        FancyArray<String> a = new FancyArray<>(5);
-        System.out.println(a); // expected: []
+        removed = list.remove("e");
+        System.out.println(removed);                // expected: false
+        System.out.println(list.size());            // expected: 5
+        System.out.println(list);                   // expected: [a, b, c, d, c]
+        System.out.println(list.toReverseString()); // expected: [c, d, c, b, a]
+        System.out.println();
 
-        a.add("first");
-        System.out.println(a); // expected: [first]
+        removed = list.remove(new String("c"));
+        System.out.println(removed);                // expected: true
+        System.out.println(list.size());            // expected: 4
+        System.out.println(list);                   // expected: [a, b, d, c]
+        System.out.println(list.toReverseString()); // expected: [c, d, b, a]
+        System.out.println();
 
-        a.add("second");
-        a.add("third");
-        System.out.println(a); // expected: [first, second, third]
+        removed = list.remove(new String("c"));
+        System.out.println(removed);                // expected: true
+        System.out.println(list.size());            // expected: 3
+        System.out.println(list);                   // expected: [a, b, d]
+        System.out.println(list.toReverseString()); // expected: [d, b, a]
+        System.out.println();
 
+        removed = list.remove(new String("a"));
+        System.out.println(removed);                // expected: true
+        System.out.println(list.size());            // expected: 2
+        System.out.println(list);                   // expected: [b, d]
+        System.out.println(list.toReverseString()); // expected: [d, b]
+        System.out.println(list.getFirst());        // expected: b
+        System.out.println(list.getLast());         // expected: d
         System.out.println();
     }
 
     private static void testEquals() {
         System.out.println("testing equals");
 
-        FancyArray<String> a = new FancyArray<>(5);
-        a.add("first");
-        a.add("second");
-        a.add("third");
+        // both empty
+        DoublyLinkedList<String> list1 = new DoublyLinkedList<>();
+        DoublyLinkedList<String> list2 = new DoublyLinkedList<>();
+        System.out.println(list1.equals(list2));            // expected: true
 
-        FancyArray<String> b = new FancyArray<>(10);
-        b.add("first");
-        b.add("second");
-        b.add("third");
+        // first is longer
+        DoublyLinkedList<String> list3 = new DoublyLinkedList<>();
+        list3.add("a");
+        list3.add("b");
+        list3.add("c");
+        list3.add("d");
+        DoublyLinkedList<String> list4 = new DoublyLinkedList<>();
+        list4.add("a");
+        list4.add("b");
+        System.out.println(list3.equals(list4));            // expected: false
 
-        FancyArray<String> c = new FancyArray<>(5);
-        c.add("first");
-        c.add("second");
-        c.add("another");
+        // second is longer
+        DoublyLinkedList<String> list5 = new DoublyLinkedList<>();
+        list5.add("a");
+        list5.add("b");
+        DoublyLinkedList<String> list6 = new DoublyLinkedList<>();
+        list6.add("a");
+        list6.add("b");
+        list6.add("c");
+        list6.add("d");
+        System.out.println(list5.equals(list6));            // expected: false
 
-        FancyArray<String> d = new FancyArray<>(5);
-        d.add("first");
-        d.add("second");
+        // same length, but one element doesn't match
+        DoublyLinkedList<String> list7 = new DoublyLinkedList<>();
+        list7.add("a");
+        list7.add("b");
+        list7.add("c");
+        list7.add("d");
+        DoublyLinkedList<String> list8 = new DoublyLinkedList<>();
+        list8.add("a");
+        list8.add("b");
+        list8.add("e");
+        list8.add("d");
+        System.out.println(list7.equals(list8));            // expected: false
 
-        System.out.println(a.equals(b)); // expected: true
-        System.out.println(b.equals(a)); // expected: true
-        System.out.println(a.equals((Object) b)); // expected: true
-        System.out.println(b.equals((Object) a)); // expected: true
-        System.out.println(a.equals(c)); // expected: false
-        System.out.println(c.equals(a)); // expected: false
-        System.out.println(a.equals(d)); // expected: false
-        System.out.println(d.equals(a)); // expected: false
-        System.out.println(a.equals("a string")); // expected: false
-        System.out.println(a.equals(null)); // expected: false
+        // equal. one built with addFirst, one with addLast
+        DoublyLinkedList<String> list9 = new DoublyLinkedList<>();
+        list9.addFirst("c");
+        list9.addFirst("b");
+        list9.addFirst("a");
+        DoublyLinkedList<String> list10 = new DoublyLinkedList<>();
+        list10.addLast("a");
+        list10.addLast("b");
+        list10.addLast("c");
+        System.out.println(list9.equals(list10));           // expected: true
+
+        // equal. argument is of type Object
+        DoublyLinkedList<String> list11 = new DoublyLinkedList<>();
+        list11.add("a");
+        list11.add("b");
+        DoublyLinkedList<String> list12 = new DoublyLinkedList<>();
+        list12.add("a");
+        list12.add("b");
+        System.out.println(list11.equals((Object) list12)); // expected: true
+
+        // check if DLL<String> equals DLL<Integer> of same length
+        DoublyLinkedList<String> list13 = new DoublyLinkedList<>();
+        list13.add("a");
+        DoublyLinkedList<Integer> list14 = new DoublyLinkedList<>();
+        list14.add(1);
+        System.out.println(list13.equals(list14));          // expected: false
+
+        // check if equals a String
+        DoublyLinkedList<String> list15 = new DoublyLinkedList<>();
+        list15.add("a");
+        System.out.println(list15.equals("a"));             // expected: false
+
+        // check if equals null
+        DoublyLinkedList<String> list16 = new DoublyLinkedList<>();
+        System.out.println(list16.equals(null));            // expected: false
 
         System.out.println();
     }
 
     private static void testIndexOf() {
-        System.out.println("Testing indexOf");
+        System.out.println("testing indexOf");
 
-        FancyArray<Integer> integers = new FancyArray<>(8);
-        integers.add(5);
-        integers.add(10);
-        integers.add(15);
-        integers.add(10);
-        integers.add(20);
-        System.out.println(integers.indexOf(5)); // expected: 0
-        System.out.println(integers.indexOf(10)); // expected: 1
-        System.out.println(integers.indexOf(15)); // expected: 2
-        System.out.println(integers.indexOf(20)); // expected: 4
-        System.out.println(integers.indexOf(25)); // expected: -1
-
-        FancyArray<String> strings = new FancyArray<>();
-        strings.add("first");
-        System.out.println(strings.indexOf(new String("first"))); // expected: 0
-        System.out.println(strings.indexOf("another")); // expected: -1
+        DoublyLinkedList<String> list = new DoublyLinkedList<>();
+        System.out.println(list.indexOf("a")); // expected: -1
+        list.add("a");
+        list.add("b");
+        list.add("c");
+        list.add("c");
+        list.add("b");
+        System.out.println(list.indexOf("a")); // expected: 0
+        System.out.println(list.indexOf("b")); // expected: 1
+        System.out.println(list.indexOf("c")); // expected: 2
+        System.out.println(list.indexOf("d")); // expected: -1
 
         System.out.println();
     }
 
     private static void testLastIndexOf() {
-        System.out.println("Testing lastIndexOf");
+        System.out.println("testing lastIndexOf");
 
-        FancyArray<Integer> integers = new FancyArray<>(8);
-        integers.add(5);
-        integers.add(10);
-        integers.add(15);
-        integers.add(10);
-        integers.add(20);
-        System.out.println(integers.lastIndexOf(5)); // expected: 0
-        System.out.println(integers.lastIndexOf(10)); // expected: 3
-        System.out.println(integers.lastIndexOf(15)); // expected: 2
-        System.out.println(integers.lastIndexOf(20)); // expected: 4
-        System.out.println(integers.lastIndexOf(25)); // expected: -1
-
-        FancyArray<String> strings = new FancyArray<>();
-        strings.add("first");
-        System.out.println(strings.lastIndexOf(new String("first"))); // expected: 0
-        System.out.println(strings.lastIndexOf("another")); // expected: -1
+        DoublyLinkedList<String> list = new DoublyLinkedList<>();
+        System.out.println(list.lastIndexOf("a")); // expected: -1
+        list.add("a");
+        list.add("b");
+        list.add("c");
+        list.add("c");
+        list.add("b");
+        System.out.println(list.lastIndexOf("a")); // expected: 0
+        System.out.println(list.lastIndexOf("b")); // expected: 4
+        System.out.println(list.lastIndexOf("c")); // expected: 3
+        System.out.println(list.indexOf("d")); // expected: -1
 
         System.out.println();
     }
 
-    private static void testAddTwoParameters() {
-        System.out.println("Testing add with two parameters");
+    private static void testGet() {
+        System.out.println("testing get");
 
-        FancyArray<String> fancyArray = new FancyArray<>(8);
-        fancyArray.add("one");
-        fancyArray.add("two");
-        System.out.println(fancyArray); // expected: [one, two]
-        System.out.println(fancyArray.size()); // expected: 2
-
-        fancyArray.add(2, "three");
-        System.out.println(fancyArray); // expected: [one, two, three]
-        System.out.println(fancyArray.size()); // expected: 3
-
-        fancyArray.add(0, "zero");
-        System.out.println(fancyArray); // expected: [zero, one, two, three]
-        System.out.println(fancyArray.get(0)); // expected: zero
-        System.out.println(fancyArray.get(1)); // expected: one
-        System.out.println(fancyArray.size()); // expected: 4
-
-        fancyArray.add(1, "half");
-        System.out.println(fancyArray); // expected: [zero, half, one, two, three]
-        System.out.println(fancyArray.get(0)); // expected: zero
-        System.out.println(fancyArray.get(1)); // expected: half
-        System.out.println(fancyArray.get(2)); // expected: one
-        System.out.println(fancyArray.size()); // expected: 5
+        DoublyLinkedList<String> list = new DoublyLinkedList<>();
 
         try {
-            fancyArray = new FancyArray<>(8);
-            fancyArray.add("one");
-            fancyArray.add("two");
-            fancyArray.add("three");
-            fancyArray.add(-1, "zero");
-            System.out.println("An exception should have occurred here, but didn't");
-        } catch (Exception ignored) {
+            list.get(-1);
+            System.out.println("An exception was supposed to occur here, but didn't");
+        } catch (IndexOutOfBoundsException ignored) {
         }
 
         try {
-            fancyArray = new FancyArray<>(8);
-            fancyArray.add("one");
-            fancyArray.add("two");
-            fancyArray.add("three");
-            fancyArray.add(4, "five");
-            System.out.println("An exception should have occurred here, but didn't");
-        } catch (Exception ignored) {
+            list.get(0);
+            System.out.println("An exception was supposed to occur here, but didn't");
+        } catch (IndexOutOfBoundsException ignored) {
         }
 
-        fancyArray = new FancyArray<>(3);
-        fancyArray.add(0, "three");
-        fancyArray.add(0, "two");
-        fancyArray.add(0, "one");
-        System.out.println(fancyArray); // expected: [one, two, three]
+        list.add("a");
+        System.out.println(list.get(0)); // expected: a
+
+        list.add("b");
+        list.add("c");
+        list.add("d");
+        list.add("e");
+        list.add("f");
+        System.out.println(list.get(1)); // expected: b
+        System.out.println(list.get(2)); // expected: c
+        System.out.println(list.get(3)); // expected: d
+        System.out.println(list.get(4)); // expected: e
+        System.out.println(list.get(5)); // expected: f
+        System.out.println();
 
         try {
-            fancyArray.add(0, "zero");
-            System.out.println("An exception should have occurred here, but didn't");
-        } catch (Exception ignored) {
+            list.get(-1);
+            System.out.println("An exception was supposed to occur here, but didn't");
+        } catch (IndexOutOfBoundsException ignored) {
         }
 
         try {
-            fancyArray = new FancyArray<>(0);
-            fancyArray.add(0, "one");
-            System.out.println("An exception should have occurred here, but didn't");
-        } catch (Exception ignored) {
+            list.get(6);
+            System.out.println("An exception was supposed to occur here, but didn't");
+        } catch (IndexOutOfBoundsException ignored) {
+        }
+    }
+
+    private static void testSet() {
+        System.out.println("testing set");
+
+        DoublyLinkedList<String> list = new DoublyLinkedList<>();
+
+        try {
+            list.set(-1, "a");
+            System.out.println("An exception was supposed to occur here, but didn't");
+        } catch (IndexOutOfBoundsException ignored) {
         }
 
+        try {
+            list.set(0, "a");
+            System.out.println("An exception was supposed to occur here, but didn't");
+        } catch (IndexOutOfBoundsException ignored) {
+        }
+
+        list.add("a");
+        System.out.println(list.set(0, "aa"));  // expected: a
+        System.out.println(list);               // expected: [aa]
+
+        list.add("b");
+        list.add("c");
+        list.add("d");
+        list.add("e");
+        list.add("f");
+
+        System.out.println(list.set(1, "bb"));  // expected: b
+        System.out.println(list.set(2, "cc"));  // expected: c
+        System.out.println(list.set(3, "dd"));  // expected: d
+        System.out.println(list.set(4, "ee"));  // expected: e
+        System.out.println(list.set(5, "f"));   // expected: f
+        System.out.println(list);               // expected: [aa, bb, cc, dd, ee, f]
+        System.out.println(list.size());        // expected: 6
+        System.out.println();
+
+        try {
+            list.set(-1, "a");
+            System.out.println("An exception was supposed to occur here, but didn't");
+        } catch (IndexOutOfBoundsException ignored) {
+        }
+
+        try {
+            list.set(6, "a");
+            System.out.println("An exception was supposed to occur here, but didn't");
+        } catch (IndexOutOfBoundsException ignored) {
+        }
+    }
+
+    private static void testAddAtIndex() {
+        System.out.println("testing add(int, E)");
+
+        DoublyLinkedList<String> list = new DoublyLinkedList<>();
+
+        try {
+            list.add(-1, "a");
+            System.out.println("An exception should have occurred here, but didn't");
+        } catch (IndexOutOfBoundsException ignored) {
+        }
+
+        try {
+            list.add(1, "a");
+            System.out.println("An exception should have occurred here, but didn't");
+        } catch (IndexOutOfBoundsException ignored) {
+        }
+
+        list.add(0, "a");
+        System.out.println(list.size());            // expected: 1
+        System.out.println(list);                   // expected: [a]
+        System.out.println(list.toReverseString()); // expected: [a]
+        System.out.println();
+
+        list.add(1, "b");
+        System.out.println(list.size());            // expected: 2
+        System.out.println(list);                   // expected: [a, b]
+        System.out.println(list.toReverseString()); // expected: [b, a]
+        System.out.println();
+
+        list.add(0, "z");
+        System.out.println(list.size());            // expected: 3
+        System.out.println(list);                   // expected: [z, a, b]
+        System.out.println(list.toReverseString()); // expected: [b, a, z]
+        System.out.println();
+
+        list.add(2, "ab");
+        System.out.println(list.size());            // expected: 4
+        System.out.println(list);                   // expected: [z, a, ab, b]
+        System.out.println(list.toReverseString()); // expected: [b, ab, a, z]
+        System.out.println();
+
+        list.add(2, "other");
+        System.out.println(list.size());            // expected: 5
+        System.out.println(list);                   // expected: [z, a, other, ab, b]
+        System.out.println(list.toReverseString()); // expected: [b, ab, other, a, z]
+        System.out.println();
+
+        try {
+            list.add(-1, "a");
+            System.out.println("An exception should have occurred here, but didn't");
+        } catch (IndexOutOfBoundsException ignored) {
+        }
+
+        try {
+            list.add(list.size() + 1, "a");
+            System.out.println("An exception should have occurred here, but didn't");
+        } catch (IndexOutOfBoundsException ignored) {
+        }
+    }
+
+    private static void testRemoveAtIndex() {
+        System.out.println("testing remove(int)");
+
+        DoublyLinkedList<String> list = new DoublyLinkedList<>();
+
+        try {
+            list.remove(-1);
+            System.out.println("An exception should have occurred here, but didn't");
+        } catch (IndexOutOfBoundsException ignored) {
+        }
+
+        try {
+            list.remove(0);
+            System.out.println("An exception should have occurred here, but didn't");
+        } catch (IndexOutOfBoundsException ignored) {
+        }
+
+        list.add("a");
+        String result = list.remove(0);
+        System.out.println(result);                 // expected: a
+        System.out.println(list.size());            // expected: 0
+        System.out.println(list);                   // expected: []
+        System.out.println(list.toReverseString()); // expected: []
+        System.out.println();
+
+        list.add("a");
+        list.add("b");
+        list.add("c");
+        list.add("d");
+        list.add("e");
+
+        result = list.remove(2);
+        System.out.println(result);                 // expected: c
+        System.out.println(list.size());            // expected: 4
+        System.out.println(list);                   // expected: [a, b, d, e]
+        System.out.println(list.toReverseString()); // expected: [e, d, b, a]
+        System.out.println();
+
+        result = list.remove(0);
+        System.out.println(result);                 // expected: a
+        System.out.println(list.size());            // expected: 3
+        System.out.println(list);                   // expected: [b, d, e]
+        System.out.println(list.toReverseString()); // expected: [e, d, b]
+        System.out.println();
+
+        result = list.remove(2);
+        System.out.println(result);                 // expected: e
+        System.out.println(list.size());            // expected: 2
+        System.out.println(list);                   // expected: [b, d]
+        System.out.println(list.toReverseString()); // expected: [d, b]
+        System.out.println();
+
+        try {
+            list.remove(-1);
+            System.out.println("An exception should have occurred here, but didn't");
+        } catch (IndexOutOfBoundsException ignored) {
+        }
+
+        try {
+            list.remove(2);
+            System.out.println("An exception should have occurred here, but didn't");
+        } catch (IndexOutOfBoundsException ignored) {
+        }
+    }
+
+    private static void testImplementsList3130() {
+        System.out.println("testing DoublyLinkedList implements List3130");
+        System.out.println(new DoublyLinkedList<String>() instanceof List3130); // expected: true
         System.out.println();
     }
 
-    private static void testRemove() {
-        System.out.println("Testing remove");
+    private static void testIterator() {
+        System.out.println("testing iterator()");
 
-        FancyArray<String> fancyArray = new FancyArray<>(8);
-        fancyArray.add("one");
-        fancyArray.add("two");
-        fancyArray.add("three");
-        fancyArray.add("four");
-        fancyArray.add("five");
-        fancyArray.add("six");
-        System.out.println(fancyArray); // expected: [one, two, three, four, five, six]
+        DoublyLinkedList<String> list = new DoublyLinkedList<>();
 
-        String removed = fancyArray.remove(2);
-        System.out.println(removed); // expected: three
-        System.out.println(fancyArray); // expected: [one, two, four, five, six]
-        System.out.println(fancyArray.get(1)); // expected: two
-        System.out.println(fancyArray.get(2)); // expected: four
-        System.out.println(fancyArray.get(3)); // expected: five
-        System.out.println(fancyArray.size()); // expected: 5
-
-        removed = fancyArray.remove(0);
-        System.out.println(removed); // expected: one
-        System.out.println(fancyArray); // expected: [two, four, five, six]
-        System.out.println(fancyArray.get(0)); // expected: two
-        System.out.println(fancyArray.size()); // expected: 4
-
-        removed = fancyArray.remove(3);
-        System.out.println(removed); // expected: six
-        System.out.println(fancyArray); // expected: [two, four, five]
-        System.out.println(fancyArray.size()); // expected: 3
-
-        fancyArray.add("seven");
-        System.out.println(fancyArray); // expected: [two, four, five, seven]
-        System.out.println(fancyArray.size()); // expected: 4
-
-        fancyArray = new FancyArray<>(3);
-        fancyArray.add("one");
-        fancyArray.add("two");
-        fancyArray.add("three");
-        removed = fancyArray.remove(2);
-        System.out.println(fancyArray); // expected: [one, two]
-        System.out.println(fancyArray.size()); // expected: 2
-
-        try {
-            fancyArray = new FancyArray<>(8);
-            fancyArray.add("one");
-            fancyArray.add("two");
-            fancyArray.remove(-1);
-            System.out.println("An exception should have occurred here, but didn't");
-        } catch (Exception ignored) {
+        for (String s : list) {
+            System.out.print(s);
         }
 
-        try {
-            fancyArray = new FancyArray<>(8);
-            fancyArray.add("one");
-            fancyArray.add("two");
-            fancyArray.remove(2);
-            System.out.println("An exception should have occurred here, but didn't");
-        } catch (Exception ignored) {
-        }
-
+        list.add("a");
+        for (String s : list) {
+            System.out.print(s);
+        } // expected: a
         System.out.println();
-    }
 
-    private static void testAddFrom() {
-        System.out.println("Testing addFrom");
+        list.add("b");
+        list.add("c");
 
-        FancyArray<Integer> fa1 = new FancyArray<>();
-        fa1.add(1);
-        fa1.add(2);
-
-        FancyArray<Integer> fa2 = new FancyArray<>();
-        fa2.add(3);
-        fa2.add(4);
-        fa2.add(5);
-
-        fa1.addFrom(fa2);
-        System.out.println(fa1); // expected: [1, 2, 3, 4, 5]
-        System.out.println(fa2); // expected: [3, 4, 5]
-
-        /**********************/
-
-        FancyArray<Number> fa3 = new FancyArray<>();
-        fa3.add(1.5);
-
-        FancyArray<Integer> fa4 = new FancyArray<>();
-        fa4.add(2);
-        fa4.add(3);
-        fa4.add(4);
-
-        fa3.addFrom(fa4);
-        System.out.println(fa3); // expected: [1.5, 2, 3, 4]
-        System.out.println(fa4); // expected: [2, 3, 4]
-
-        System.out.println();
-    }
-
-    private static void testAddTo() {
-        System.out.println("Testing addFrom");
-
-        FancyArray<Integer> fa1 = new FancyArray<>();
-        fa1.add(1);
-        fa1.add(2);
-
-        FancyArray<Integer> fa2 = new FancyArray<>();
-        fa2.add(3);
-        fa2.add(4);
-        fa2.add(5);
-
-        fa1.addTo(fa2);
-        System.out.println(fa1); // expected: [1, 2]
-        System.out.println(fa2); // expected: [3, 4, 5, 1, 2]
-
-        /**********************/
-
-        FancyArray<Integer> fa3 = new FancyArray<>();
-        fa3.add(1);
-
-        FancyArray<Number> fa4 = new FancyArray<>();
-        fa4.add(2.5);
-        fa4.add(3.5);
-
-        fa3.addTo(fa4);
-        System.out.println(fa4); // expected: [2.5, 3.5, 1]
-        System.out.println(fa3); // expected: [1]
-
-        System.out.println();
-    }
-
-    private static void testForEach() {
-        System.out.println("testing forEach");
-
-        FancyArray<Integer> fancyArray = new FancyArray<>(6);
-        fancyArray.add(11);
-        fancyArray.add(33);
-        fancyArray.add(22);
-
-        fancyArray.forEach(integer -> System.out.print(integer + " ")); // expected: 11 33 22
+        for (String s : list) {
+            System.out.print(s + " ");
+        } // expected: a b c
 
         System.out.println("\n");
+
+        Iterator<String> iterator = list.iterator();
+    }
+
+    private static void testIteratorNext() {
+        System.out.println("testing Iterator's next method");
+
+        DoublyLinkedList<String> list = new DoublyLinkedList<>();
+        list.add("a");
+        list.add("b");
+
+        Iterator<String> iterator = list.iterator();
+        System.out.println(iterator.next()); // expected: a
+        System.out.println(iterator.next()); // expected: b
+        System.out.println();
+
+        try {
+            iterator.next();
+            System.out.println("An exception should have occurred here, but didn't");
+        } catch (NoSuchElementException ignored) {
+        }
+
+        list.add("c");
+
+        iterator = list.iterator();
+        System.out.println(iterator.next()); // expected: a
+        System.out.println(iterator.next()); // expected: b
+        System.out.println(iterator.next()); // expected: c
+        System.out.println();
+
+        try {
+            iterator.next();
+            System.out.println("An exception should have occurred here, but didn't");
+        } catch (NoSuchElementException ignored) {
+        }
+    }
+
+    private static void testIteratorHasNext() {
+        System.out.println("testing Iterator's hasNext method");
+
+        DoublyLinkedList<String> list = new DoublyLinkedList<>();
+        list.add("a");
+        list.add("b");
+
+        Iterator<String> iterator = list.iterator();
+        System.out.println(iterator.hasNext()); // expected: true
+        iterator.next();
+        System.out.println(iterator.hasNext()); // expected: true
+        iterator.next();
+        System.out.println(iterator.hasNext()); // expected: false
+        System.out.println();
+
+        list.add("c");
+
+        iterator = list.iterator();
+        System.out.println(iterator.hasNext()); // expected: true
+        iterator.next();
+        System.out.println(iterator.hasNext()); // expected: true
+        iterator.next();
+        System.out.println(iterator.hasNext()); // expected: true
+        iterator.next();
+        System.out.println(iterator.hasNext()); // expected: false
+        System.out.println();
+    }
+
+    private static void testOverridesReplaceAll() {
+        System.out.println("testing if DoublyLinkedList overrides replaceAll");
+        Method[] declaredMethods = DoublyLinkedList.class.getDeclaredMethods();
+        System.out.println(containsMethodNamedReplaceAllWithOneUnaryOperatorParameter(declaredMethods)); // expected: true
+        System.out.println();
+    }
+
+    private static boolean containsMethodNamedReplaceAllWithOneUnaryOperatorParameter(Method[] methods) {
+        for (Method method : methods) {
+            if (method.getName().equals("replaceAll") && method.getParameterCount() == 1 && method.getParameterTypes()[0].getCanonicalName().equals("java.util.function.UnaryOperator")) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private static void testReplaceAll() {
         System.out.println("testing replaceAll");
 
-        FancyArray<Integer> fancyArray = new FancyArray<>(6);
-        fancyArray.add(11);
-        fancyArray.add(33);
-        fancyArray.add(22);
+        DoublyLinkedList<String> strings = new DoublyLinkedList<>();
+        strings.add("a");
+        strings.add("b");
+        strings.add("c");
+        strings.replaceAll(String::toUpperCase);
+        System.out.println(strings);                    // expected: [A, B, C]
+        System.out.println(strings.toReverseString());  // expected: [C, B, A]
+        System.out.println();
 
-        fancyArray.replaceAll(integer -> 2 * integer);
-
-        System.out.println(fancyArray.get(0)); // expected: 22
-        System.out.println(fancyArray.get(1)); // expected: 66
-        System.out.println(fancyArray.get(2)); // expected: 44
-
+        DoublyLinkedList<Integer> integers = new DoublyLinkedList<>();
+        integers.add(1);
+        integers.add(2);
+        integers.add(3);
+        integers.add(4);
+        integers.replaceAll(integer -> 2 * integer);
+        System.out.println(integers);                   // expected: [2, 4, 6, 8]
         System.out.println();
     }
 
-    private static void testMax() {
-        System.out.println("testing max");
+    private static void testIteratorRemove() {
+        System.out.println("testing Iterator's remove method");
 
-        FancyArray<Integer> fancyArray = new FancyArray<>(6);
-        fancyArray.add(11);
-        fancyArray.add(33);
-        fancyArray.add(22);
+        DoublyLinkedList<String> list = new DoublyLinkedList<>();
+        list.add("a");
+        list.add("b");
+        list.add("c");
+        list.add("d");
+        list.add("e");
 
-        Comparator<Number> numberComparator = (number1, number2) -> Double.compare(number1.doubleValue(), number2.doubleValue());
-        System.out.println(fancyArray.max(numberComparator)); // expected: 33
+        Iterator<String> iterator = list.iterator();
 
-        FancyArray<LocalTime> localTimeFancyArray = new FancyArray<>(6);
-        localTimeFancyArray.add(LocalTime.parse("05:45"));
-        localTimeFancyArray.add(LocalTime.parse("03:50"));
-        localTimeFancyArray.add(LocalTime.parse("15:12"));
-        localTimeFancyArray.add(LocalTime.parse("10:45"));
+        try {
+            iterator.remove();
+            System.out.println("An exception should have occurred here, but didn't");
+        } catch (IllegalStateException ignored) {
+        }
 
-        Comparator<LocalTime> localTimeComparator = Comparator.naturalOrder();
-        System.out.println(localTimeFancyArray.max(localTimeComparator)); // expected: 15:12
-
+        iterator.next();
+        iterator.remove();
+        System.out.println(list.size());            // expected: 4
+        System.out.println(list);                   // expected: [b, c, d, e]
+        System.out.println(list.toReverseString()); // expected: [e, d, c, b]
         System.out.println();
-    }
-    private static void testSort() {
-        System.out.println("testing sort");
 
-        FancyArray<Integer> fancyArray = new FancyArray<>(6);
-        fancyArray.add(11);
-        fancyArray.add(33);
-        fancyArray.add(22);
+        try {
+            iterator.remove();
+            System.out.println("An exception should have occurred here, but didn't");
+        } catch (IllegalStateException ignored) {
+        }
 
-        Comparator<Number> numberComparator = (number1, number2) -> Double.compare(number1.doubleValue(), number2.doubleValue());
-        fancyArray.sort(numberComparator);
-        System.out.println(fancyArray); // expected: [11, 22, 33]
+        iterator.next();
 
-        FancyArray<LocalTime> localTimeFancyArray = new FancyArray<>(6);
-        localTimeFancyArray.add(LocalTime.parse("05:45"));
-        localTimeFancyArray.add(LocalTime.parse("03:50"));
-        localTimeFancyArray.add(LocalTime.parse("15:12"));
-        localTimeFancyArray.add(LocalTime.parse("10:45"));
+        iterator.next();
+        iterator.remove();
+        System.out.println(list.size());            // expected: 3
+        System.out.println(list);                   // expected: [b, d, e]
+        System.out.println(list.toReverseString()); // expected: [e, d, b]
+        System.out.println();
 
-        Comparator<LocalTime> localTimeComparator = Comparator.naturalOrder();
-        localTimeFancyArray.sort(localTimeComparator);
-        System.out.println(localTimeFancyArray); // expected: [03:50, 05:45, 10:45, 15:12]
+        try {
+            iterator.remove();
+            System.out.println("An exception should have occurred here, but didn't");
+        } catch (IllegalStateException ignored) {
+        }
+
+        iterator.next();
+
+        iterator.next();
+        iterator.remove();
+        System.out.println(list.size());            // expected: 2
+        System.out.println(list);                   // expected: [b, d]
+        System.out.println(list.toReverseString()); // expected: [d, b]
+        System.out.println();
+
+        try {
+            iterator.remove();
+            System.out.println("An exception should have occurred here, but didn't");
+        } catch (IllegalStateException ignored) {
+        }
     }
 }
+

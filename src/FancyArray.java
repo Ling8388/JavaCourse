@@ -9,6 +9,7 @@ public class FancyArray<E> {
     private E[] arr;
 
     public FancyArray() {
+
         arr = (E[]) new Object[10];
     }
 
@@ -126,7 +127,7 @@ public class FancyArray<E> {
         for(int i=0; i<sizes-1; i++) {
             if(i < index) {
                 temp[i] = arr[i];
-            } else if(i >= index) {
+            } else {
                 temp[i] = arr[i+1];
             }
         }
